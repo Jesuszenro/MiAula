@@ -5,16 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
-
+    tools:context=".RegisterActivity"
+    android:fillViewport="true">
+    <!-- Círculos decorativos -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <!-- Primer círculo (más chico) -->
         <View
             android:layout_width="126dp"
             android:layout_height="126dp"
@@ -33,44 +32,49 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/circle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Header de bienvenida -->
     <LinearLayout
         android:id="@+id/header_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginTop="100dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bienvenido a MiAula"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="100dp"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:textColor="@color/Blue_main"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrate ahora y se parte de esta comunidad"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp"
-            android:textSize="16dp"
-            android:textColor="@color/Blue_secondary"/>
+            android:text="Regístrate ahora y sé parte de esta comunidad"
+            android:textSize="16sp"
+            android:textColor="@color/Blue_secondary"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/form_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/header_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"
-        android:orientation="vertical"
-        android:layout_marginTop="45dp"
-        android:gravity="center">
+        android:layout_marginBottom="32dp">
 
+        <!-- Nombre -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,23 +84,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre"
-                android:textSize="16dp"
-                android:textColor="@color/Blue_secondary"
-                android:textStyle="normal"
-                />
+                android:textSize="16sp"
+                android:textColor="@color/Blue_secondary" />
             <EditText
                 android:id="@+id/editTextText"
-                android:background="@drawable/edit_bg"
                 android:layout_width="232dp"
                 android:layout_height="36dp"
-                android:ems="10"
+                android:background="@drawable/edit_bg"
                 android:inputType="text"
-                android:layout_marginTop="8dp"
-                tools:layout_editor_absoluteX="45dp"
-                tools:layout_editor_absoluteY="239dp" />
-
+                android:layout_marginTop="8dp" />
         </LinearLayout>
-
+        <!-- ID -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,23 +104,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID"
-                android:textSize="16dp"
-                android:textColor="@color/Blue_secondary"
-                android:textStyle="normal"
-                />
+                android:textSize="16sp"
+                android:textColor="@color/Blue_secondary" />
             <EditText
                 android:id="@+id/id"
                 android:layout_width="232dp"
                 android:layout_height="36dp"
                 android:background="@drawable/edit_bg"
-                android:ems="10"
                 android:inputType="number"
-                android:layout_marginTop="8dp"
-                tools:layout_editor_absoluteX="45dp"
-                tools:layout_editor_absoluteY="239dp" />
-
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
+        <!-- Email -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,23 +125,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email"
-                android:textSize="16dp"
-                android:textColor="@color/Blue_secondary"
-                android:textStyle="normal"
-                />
+                android:textSize="16sp"
+                android:textColor="@color/Blue_secondary" />
             <EditText
                 android:id="@+id/email"
                 android:layout_width="232dp"
                 android:layout_height="36dp"
                 android:background="@drawable/edit_bg"
-                android:ems="10"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="8dp"
-                tools:layout_editor_absoluteX="45dp"
-                tools:layout_editor_absoluteY="239dp" />
-
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
+        <!-- Contraseña -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -158,23 +146,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Contraseña"
-                android:textSize="16dp"
-                android:textColor="@color/Blue_secondary"
-                android:textStyle="normal"
-                />
+                android:textSize="16sp"
+                android:textColor="@color/Blue_secondary" />
             <EditText
                 android:id="@+id/editTextNumber"
                 android:layout_width="232dp"
                 android:layout_height="36dp"
                 android:background="@drawable/edit_bg"
-                android:ems="10"
                 android:inputType="textPassword"
-                android:layout_marginTop="8dp"
-                tools:layout_editor_absoluteX="45dp"
-                tools:layout_editor_absoluteY="239dp" />
-
-        </LinearLayout>
-
+                android:layout_marginTop="8dp" />
+        </LinearLayout> -->
+        <!-- Rol -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -183,29 +165,42 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ID"
-                android:textSize="16dp"
-                android:textColor="@color/Blue_secondary"
-                android:textStyle="normal"
-                />
-            <Spinner
-                android:id="@+id/spinner"
+                android:text="Rol"
+                android:textSize="16sp"
+                android:textColor="@color/Blue_secondary" />
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="232dp"
-                android:layout_height="36dp"
-                android:background="@drawable/edit_bg"
-                android:layout_marginTop="8dp"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="586dp" />
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                app:boxBackgroundMode="outline"
+                android:layout_marginTop="12dp">
 
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteRol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:importantForAutofill="no"
+                    android:dropDownHeight="wrap_content"
+                    android:textColor="@color/Blue_main"
+                    android:textSize="14sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
+        <!-- Botón-->
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:id="@+id/btnRegister"
+            android:layout_width="232dp"
+            android:layout_height="48dp"
             android:background="@drawable/btn_bg"
             android:text="Regístrate"
-            android:textSize="16dp"
-            android:textAllCaps="false"/>
-
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
