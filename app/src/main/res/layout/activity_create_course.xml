@@ -49,13 +49,18 @@
             android:background="@drawable/edit_bg"
             android:layout_marginTop="12dp" />
 
-        <EditText
-            android:id="@+id/etProfesor"
-            android:hint="Profesor"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asignar profesor"
+            android:layout_marginTop="16dp" />
+
+        <Spinner
+            android:id="@+id/spinnerProfesor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_bg"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="8dp" />
 
         <LinearLayout
             android:orientation="horizontal"

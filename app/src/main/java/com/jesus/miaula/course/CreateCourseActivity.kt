@@ -3,6 +3,7 @@ package com.jesus.miaula.course
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +18,12 @@ import java.util.Calendar
 
 class CreateCourseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateCourseBinding
-
+    private val listaProfesores = mutableListOf<Pair<String, String>>() // UID - nombre
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateCourseBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        cargarProfesores()
         // Selección de fecha
         binding.etFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
@@ -58,7 +59,8 @@ class CreateCourseActivity : AppCompatActivity() {
         binding.btnRegistrar.setOnClickListener {
             val name = binding.etNombreCurso.text.toString()
             val clave = binding.etClaveCurso.text.toString()
-            val profesor = binding.etProfesor.text.toString()
+            val profesorIndex = binding.spinnerProfesor.selectedItemPosition
+            val profesor = if (profesorIndex != -1) listaProfesores[profesorIndex].first else ""
             val salon = binding.etSalon.text.toString()
             val capacidad = binding.etCapacidad.text.toString().toIntOrNull() ?: 0
 
@@ -71,15 +73,21 @@ class CreateCourseActivity : AppCompatActivity() {
                 alumnos = listOf()
             )
 
-            val adminUid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
 
-            Firebase.firestore.collection("users")
-                .document(adminUid)
-                .collection("cursos")
+                // Guardar en la colección global "cursos"
+            Firebase.firestore.collection("cursos")
                 .add(curso)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Curso guardado", Toast.LENGTH_SHORT).show()
-                    finish()
+                    // Luego también lo guardas bajo el admin (opcional)
+                    Firebase.firestore.collection("users")
+                        .document(uid)
+                        .collection("cursos")
+                        .add(curso)
+                        .addOnSuccessListener {
+                            setResult(RESULT_OK)
+                            finish()
+                        }
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
@@ -87,5 +95,23 @@ class CreateCourseActivity : AppCompatActivity() {
             setResult(RESULT_OK) // ← Notifica a AdminActivity que se guardó
             finish()
         }
+
+    }
+    private fun cargarProfesores() {
+        Firebase.firestore.collection("users")
+            .whereEqualTo("role", "Profesor")
+            .get()
+            .addOnSuccessListener { result ->
+                val nombres = result.map {
+                    val uid = it.id
+                    val nombre = it.getString("nombre") ?: ""
+                    listaProfesores.add(uid to nombre)
+                    nombre
+                }
+
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nombres)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerProfesor.adapter = adapter
+            }
     }
 }

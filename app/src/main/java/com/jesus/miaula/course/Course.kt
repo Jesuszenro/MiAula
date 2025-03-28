@@ -1,5 +1,7 @@
 package com.jesus.miaula.course
 
+import java.io.Serializable
+
 data class Course(
     val nombre: String = "",
     val clave: String = "",
@@ -8,6 +10,7 @@ data class Course(
     val capacidad: Int = 0,
     val fecha: String = "",
     val hora: String = "",
-    val alumnos: List<String> = listOf()
-)
+    val alumnos: List<String> = listOf(),
+    val calificacion: Double = 0.0
+) : Serializable
 

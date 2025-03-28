@@ -13,33 +13,40 @@ import com.jesus.miaula.course.DisplayCourseFragment
 class AdminActivity : AppCompatActivity() {
 
     private lateinit var createCourseLauncher: ActivityResultLauncher<Intent>
+    lateinit var editCourseLauncher: ActivityResultLauncher<Intent>
     private lateinit var fragment: DisplayCourseFragment
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_admin)
 
-        // Mostrar el fragmento
+        // Inicializar fragmento
         fragment = DisplayCourseFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
             .commit()
 
-        createCourseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if (it.resultCode == RESULT_OK){
+        // Launcher para crear curso
+        createCourseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
                 fragment.updateResource()
             }
         }
+
+        // Launcher para editar curso
+        editCourseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                fragment.updateResource()
+            }
+        }
+
         // Botón flotante para crear curso
         val fab = findViewById<FloatingActionButton>(R.id.fab_central)
         fab.setOnClickListener {
             val intent = Intent(this, CreateCourseActivity::class.java)
             createCourseLauncher.launch(intent)
         }
-        // Opcional: cargar menú en BottomAppBar si lo usas
-        // val bottomAppBar = findViewById<BottomAppBar>(R.id.bottomAppBar)
-        // bottomAppBar.replaceMenu(R.menu.bottom_nav_admin)
     }
 }
+
