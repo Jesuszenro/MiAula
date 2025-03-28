@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="4dp"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNombreCurso"
+            android:text="Nombre del curso"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#1F3254" />
+
+        <TextView
+            android:id="@+id/tvDocente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Docente: Sin asignar"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvInscritos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alumnos inscritos: 0" />
+
+        <TextView
+            android:id="@+id/tvSalon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salón: -" />
+        <TextView
+            android:id="@+id/tvFechaHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha y hora: -"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

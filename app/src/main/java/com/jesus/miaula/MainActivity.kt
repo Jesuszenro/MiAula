@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent = Intent(this, AlumnoActivity::class.java)
+        val intent = Intent(this, AdminActivity::class.java)
         startActivity(intent)
         finish()
     }
