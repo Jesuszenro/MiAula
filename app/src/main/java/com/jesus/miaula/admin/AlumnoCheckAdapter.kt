@@ -1,4 +1,4 @@
-package com.jesus.miaula.course
+package com.jesus.miaula.admin
 
 import android.view.LayoutInflater
 import android.view.View
