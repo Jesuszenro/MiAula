@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jesus.miaula.AdminActivity
+import com.jesus.miaula.admin.AdminActivity
 import com.jesus.miaula.R
 
 class DisplayCourseFragment : Fragment(), OnCourseClickListener {

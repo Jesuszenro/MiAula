@@ -1,4 +1,4 @@
-package com.jesus.miaula
+package com.jesus.miaula.admin
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.jesus.miaula.course.CreateCourseActivity
+import com.jesus.miaula.R
 import com.jesus.miaula.course.DisplayCourseFragment
 
 class AdminActivity : AppCompatActivity() {

@@ -1,18 +1,15 @@
-package com.jesus.miaula.course
+package com.jesus.miaula.admin
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.jesus.miaula.R
+import com.jesus.miaula.course.Course
 import com.jesus.miaula.databinding.ActivityCreateCourseBinding
 import java.util.Calendar
 
@@ -63,6 +60,8 @@ class CreateCourseActivity : AppCompatActivity() {
             val profesor = if (profesorIndex != -1) listaProfesores[profesorIndex].first else ""
             val salon = binding.etSalon.text.toString()
             val capacidad = binding.etCapacidad.text.toString().toIntOrNull() ?: 0
+            val fecha = binding.etFecha.text.toString()
+            val hora = binding.etHora.text.toString()
 
             val curso = Course(
                 nombre = name,
@@ -70,24 +69,19 @@ class CreateCourseActivity : AppCompatActivity() {
                 profesorId = profesor,
                 salon = salon,
                 capacidad = capacidad,
+                fecha = fecha,
+                hora = hora,
                 alumnos = listOf()
             )
 
             val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
-
                 // Guardar en la colección global "cursos"
             Firebase.firestore.collection("cursos")
                 .add(curso)
                 .addOnSuccessListener {
-                    // Luego también lo guardas bajo el admin (opcional)
-                    Firebase.firestore.collection("users")
-                        .document(uid)
-                        .collection("cursos")
-                        .add(curso)
-                        .addOnSuccessListener {
-                            setResult(RESULT_OK)
-                            finish()
-                        }
+                    Toast.makeText(this, "Curso registrado correctamente", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
+                    finish()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()

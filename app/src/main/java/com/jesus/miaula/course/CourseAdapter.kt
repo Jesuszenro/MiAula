@@ -12,7 +12,8 @@ import com.jesus.miaula.R
 class CourseAdapter(
     private val listCourses: List<Course>,
     private val mapaProfesores: Map<String, String>,
-    private val listener: OnCourseClickListener
+    private val listener: OnCourseClickListener,
+    private val isProfesorMode: Boolean = false
 ) : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
     class CourseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,24 +31,29 @@ class CourseAdapter(
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        Firebase.firestore.collection("cursos")
-            .get()
-            .addOnSuccessListener { result ->
-                val curso = result.documents[position].toObject(Course::class.java)
-            }
         val course = listCourses[position]
-        val nombreProfesor = mapaProfesores[course.profesorId] ?: "Sin asignar"
+
+        // Mostrar nombre del curso y salón
         holder.nombre.text = course.nombre
-        holder.docente.text = "Docente: $nombreProfesor"
         holder.inscritos.text = "Alumnos inscritos: ${course.alumnos.size}"
         holder.salon.text = "Salón: ${course.salon}"
         holder.fechaHora.text = "Fecha y hora: ${course.fecha} ${course.hora}"
+
+        // Mostrar u ocultar el nombre del docente
+        if (isProfesorMode) {
+            holder.docente.visibility = View.GONE
+        } else {
+            val nombreProfesor = mapaProfesores[course.profesorId] ?: "Sin asignar"
+            holder.docente.text = "Docente: $nombreProfesor"
+            holder.docente.visibility = View.VISIBLE
+        }
 
         // Click sobre el ítem
         holder.itemView.setOnClickListener {
             listener.onCourseClick(course)
         }
     }
+
 
     override fun getItemCount(): Int = listCourses.size
 }
