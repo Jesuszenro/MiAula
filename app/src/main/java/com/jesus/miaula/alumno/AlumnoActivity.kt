@@ -1,37 +1,29 @@
-package com.jesus.miaula.profesor
+package com.jesus.miaula.alumno
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.jesus.miaula.R
 import com.jesus.miaula.calendar.CalendarFragment
-import com.jesus.miaula.databinding.ActivityProfesorBinding
+import com.jesus.miaula.databinding.ActivityAlumnoBinding
 
-class ProfesorActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityProfesorBinding
+class AlumnoActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAlumnoBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfesorBinding.inflate(layoutInflater)
+       binding = ActivityAlumnoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, CalendarFragment())
             .commit()
-
-        // Marca el ítem de calendario como seleccionado visualmente
         binding.bottomNav.selectedItemId = R.id.nav_calendario
-
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_calendario -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, CalendarFragment())
                         .commit()
-                    true
-                }
-                R.id.nav_scan -> {
-                    startActivity(Intent(this, ScanQrActivity::class.java))
                     true
                 }
                 // Otras opciones del menú...

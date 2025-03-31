@@ -2,15 +2,14 @@ package com.jesus.miaula
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jesus.miaula.admin.AdminActivity
+import com.jesus.miaula.alumno.AlumnoActivity
 import com.jesus.miaula.databinding.ActivityLoginBinding
 import com.jesus.miaula.profesor.ProfesorActivity
 
@@ -31,7 +30,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+            binding.progressBar.visibility = View.VISIBLE
+            binding.btnLogin.isEnabled = false
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult ->
                     val uid = authResult.user?.uid ?: return@addOnSuccessListener
