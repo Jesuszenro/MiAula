@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
 
 class ScanQrActivity : AppCompatActivity() {
@@ -51,8 +53,17 @@ class ScanQrActivity : AppCompatActivity() {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents != null) {
-                Toast.makeText(this, "QR leído: ${result.contents}", Toast.LENGTH_SHORT).show()
-                // Aquí puedes hacer algo con el valor, como marcar asistencia
+                val content = result.contents
+                val parts = content.split("|")
+                if (parts.size == 3) {
+                    val uidAlumno = parts[0]
+                    val nombreAlumno = parts[1]
+                    val claveCurso = parts[2]
+
+                    registerAttendace(claveCurso, uidAlumno, nombreAlumno)
+                } else {
+                    Toast.makeText(this, "QR inválido", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_SHORT).show()
             }
@@ -60,6 +71,30 @@ class ScanQrActivity : AppCompatActivity() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+    private fun registerAttendace(claveCurso: String, uidAlumno: String, nombreAlumno: String) {
+        Firebase.firestore.collection("cursos")
+            .whereEqualTo("clave", claveCurso)
+            .get()
+            .addOnSuccessListener { result ->
+                val cursoDoc = result.documents.firstOrNull()
+                if (cursoDoc != null) {
+                    val ref = cursoDoc.reference
+                    ref.update("asistencia.$uidAlumno", nombreAlumno)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Asistencia registrada", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this,
+                                "Error al registrar asistencia",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    Toast.makeText(this, "Curso no encontrado", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
 

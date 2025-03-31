@@ -49,5 +49,12 @@ class DayAdapter (
             }
         }
     }
+    private var selectedDay: DayWeek? = null
+
+    fun setSelectedDay(day: DayWeek) {
+        selectedDay = day
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = days.size
 }

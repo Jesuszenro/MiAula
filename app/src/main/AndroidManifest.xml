@@ -40,7 +40,7 @@
             android:name=".admin.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".AlumnoActivity"
+            android:name=".alumno.AlumnoActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

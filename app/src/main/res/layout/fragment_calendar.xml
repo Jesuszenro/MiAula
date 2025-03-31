@@ -21,44 +21,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Encabezado de fecha -->
-    <LinearLayout
-        android:id="@+id/header_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="38dp"
-        app:layout_constraintTop_toBottomOf="@id/tvBienvenido"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/tvFechaActual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Viernes"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#003366" />
-
-        <TextView
-            android:id="@+id/fechaCompleta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="27 de mayo, 2025"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:textColor="@color/Blue_secondary" />
-    </LinearLayout>
-
     <!-- Calendario horizontal -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDias"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="38dp"
-        app:layout_constraintTop_toBottomOf="@id/header_title"
+        app:layout_constraintTop_toBottomOf="@id/tvBienvenido"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:clipToPadding="false"
@@ -69,9 +38,31 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/rvDias"
+        app:layout_constraintTop_toBottomOf="@id/ivQrCode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <ImageButton
+        android:id="@+id/btnGenerarQr"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/qr"
+        android:scaleType="fitCenter"
+        app:tint="@color/Blue_main"
+        android:background="@null"
+        android:contentDescription="Generar QR"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/rvDias"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <ImageView
+        android:id="@+id/ivQrCode"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGenerarQr" />
 </androidx.constraintlayout.widget.ConstraintLayout>
