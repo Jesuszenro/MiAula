@@ -1,5 +1,6 @@
 package com.jesus.miaula.calendar
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -18,8 +19,10 @@ import com.google.zxing.qrcode.QRCodeWriter
 import com.jesus.miaula.alumno.GenerateQr
 import com.jesus.miaula.course.Course
 import com.jesus.miaula.course.CourseAdapter
+import com.jesus.miaula.course.CourseContentActivity
 import com.jesus.miaula.course.OnCourseClickListener
 import com.jesus.miaula.databinding.FragmentCalendarBinding
+import com.jesus.miaula.profesor.AddGradeActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -141,7 +144,14 @@ class CalendarFragment : Fragment() {
                     mapaProfesores = emptyMap(),
                     listener = object : OnCourseClickListener {
                         override fun onCourseClick(course: Course) {
-                            Toast.makeText(requireContext(), "Curso: ${course.nombre}", Toast.LENGTH_SHORT).show()
+                            if (role == "Profesor") {
+                                Log.d("CLICK", "Abriendo AddGradeActivity para ${course.clave}")
+                                val intent = Intent(requireContext(), AddGradeActivity::class.java)
+                                intent.putExtra("claveCurso", course.clave)
+                                startActivity(intent)
+                            } else if (role == "Alumno") {
+                                Toast.makeText(requireContext(), "Curso: ${course.nombre}", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     },
                     isProfesorMode = role == "Profesor"

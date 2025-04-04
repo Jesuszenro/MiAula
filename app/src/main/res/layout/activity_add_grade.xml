@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Título del curso -->
+        <TextView
+            android:id="@+id/tvNombreCurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de curso"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="@color/Blue_main"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Contenedor con info del curso -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/edit_bg"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvProfesor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profesor:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSalon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salón:"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFechaHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha y hora:"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold" />
+
+
+        <!-- Lista de alumnos con campos de calificación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calificaciones"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/Blue_main"
+            android:textSize="18sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCalificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+        </LinearLayout>
+        <!-- Botón guardar -->
+        <Button
+            android:id="@+id/btnGuardarCalificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GUARDAR CALIFICACIONES"
+            android:textAllCaps="true"
+            android:layout_marginTop="24dp"
+            android:background = "@drawable/btn_bg" />
+
+    </LinearLayout>
+</ScrollView>

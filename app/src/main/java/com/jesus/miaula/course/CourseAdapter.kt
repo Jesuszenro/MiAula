@@ -1,5 +1,6 @@
 package com.jesus.miaula.course
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,7 @@ class CourseAdapter(
 
         // Click sobre el ítem
         holder.itemView.setOnClickListener {
+            Log.d("ADAPTER", "Curso clickeado: ${course.nombre}")
             listener.onCourseClick(course)
         }
     }

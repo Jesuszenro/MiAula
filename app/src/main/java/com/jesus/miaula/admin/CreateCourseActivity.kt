@@ -89,7 +89,6 @@ class CreateCourseActivity : AppCompatActivity() {
             setResult(RESULT_OK) // ← Notifica a AdminActivity que se guardó
             finish()
         }
-
     }
     private fun cargarProfesores() {
         Firebase.firestore.collection("users")

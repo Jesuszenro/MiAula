@@ -11,7 +11,7 @@ data class Course(
     val fecha: String = "",
     val hora: String = "",
     val alumnos: List<String> = listOf(),
-    val calificacion: Double = 0.0,
+    val calificaciones: Map<String, Double> = mapOf(),
     val asistencia: Map<String, String> = emptyMap()
 ) : Serializable
 
