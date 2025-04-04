@@ -56,6 +56,7 @@
             android:layout_gravity="center_horizontal">
 
             <LinearLayout
+                android:id="@+id/infoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -101,9 +102,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_DelCourse"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/delete"
+                android:scaleType="centerInside"
+                android:background="@drawable/btn_bg_aux"
+                android:layout_marginTop="20dp"
+                android:padding="8dp"
+                android:visibility="visible"
+                app:tint="@color/White_bg" />
+
         </LinearLayout>
     </ScrollView>
-
     <!-- Botón para aceptar cambios -->
     <Button
         android:id="@+id/btnAceptar"

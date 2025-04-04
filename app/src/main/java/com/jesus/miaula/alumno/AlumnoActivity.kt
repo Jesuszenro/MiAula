@@ -27,6 +27,12 @@ class AlumnoActivity : AppCompatActivity() {
                     true
                 }
                 // Otras opciones del menú...
+                R.id.nav_tareas -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, ViewGradesFragment())
+                        .commit()
+                    true
+                }
                 else -> false
             }
         }

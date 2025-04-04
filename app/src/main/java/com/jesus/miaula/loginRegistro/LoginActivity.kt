@@ -1,4 +1,4 @@
-package com.jesus.miaula
+package com.jesus.miaula.loginRegistro
 
 import android.content.Intent
 import android.os.Bundle

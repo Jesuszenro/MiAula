@@ -3,6 +3,7 @@ package com.jesus.miaula.course
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FieldPath
@@ -48,6 +49,10 @@ class CourseContentActivity : AppCompatActivity() {
             guardarCambios()
         }
         updateAlumnos()
+        binding.btnDelCourse.setOnClickListener {
+            deleteCourse()
+
+        }
     }
 
 
@@ -93,5 +98,29 @@ class CourseContentActivity : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerAlumnosInscritos.adapter = adapter
             }
+    }
+    private fun deleteCourse() {
+        AlertDialog.Builder(this)
+            .setTitle("¿Estas seguro que quieres eliminar este curso?")
+            .setMessage("Esta acción no se puede deshacer")
+            .setPositiveButton("Aceptar") { _, _ ->
+                Firebase.firestore.collection("cursos")
+                    .whereEqualTo("clave", curso.clave)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        val doc = result.documents.firstOrNull()
+                        doc?.reference?.delete()
+                            ?.addOnSuccessListener {
+                                Toast.makeText(this, "Curso eliminado", Toast.LENGTH_SHORT).show()
+                                setResult(RESULT_OK) // <- Esto notifica a AdminActivity
+                                finish()
+                            }
+                    }
+                    .addOnFailureListener{
+                        Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }
