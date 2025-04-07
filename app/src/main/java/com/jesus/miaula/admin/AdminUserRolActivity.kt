@@ -37,8 +37,10 @@ class AdminUserRolActivity : AppCompatActivity() {
                 for (doc in result.documents) {
                     val uid = doc.id
                     val nombre = doc.getString("nombre") ?: "Sin nombre"
-                    val rol = doc.getString("role") ?: "alumno"
-                    listaUsuarios.add(Usuario(uid, nombre, rol))
+                    val rol = doc.getString("role")
+                    if (rol != null) {
+                        listaUsuarios.add(Usuario(uid, nombre, rol))
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

@@ -22,12 +22,12 @@ data class Usuario(
 class UserRolAdapter(private val usuarios: List<Usuario>) :
     RecyclerView.Adapter<UserRolAdapter.ViewHolder>() {
 
+    private val rolesVisibles = listOf("Alumno", "Profesor", "Administrador")
+    private val rolesDb = listOf("Alumno", "Profesor", "Administrador") // se guardan así, con mayúscula
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNombre: TextView = itemView.findViewById(R.id.tvNombreUsuario)
         val spinnerRol: Spinner = itemView.findViewById(R.id.spinnerRol)
-        val rolesVisibles = listOf("Alumno", "Profesor", "Administrador")
-        val rolesDb = listOf("alumno", "profesor", "administrador")
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,33 +40,33 @@ class UserRolAdapter(private val usuarios: List<Usuario>) :
         val usuario = usuarios[position]
         holder.tvNombre.text = usuario.nombre
 
-        val rolesVisibles = listOf("Alumno", "Profesor", "Administrador")
-
+        // Adaptador del Spinner
         val spinnerAdapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, rolesVisibles)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.spinnerRol.adapter = spinnerAdapter
 
-        // ⚠ Evitar disparar onItemSelected durante setSelection
-        holder.spinnerRol.setOnItemSelectedListener(null)
+        // Evita que se dispare onItemSelected en setSelection
+        holder.spinnerRol.onItemSelectedListener = null
 
-        val index = rolesVisibles.indexOf(usuario.rol.lowercase())
+        // Establece la selección según el rol actual
+        val index = rolesVisibles.indexOfFirst { it.equals(usuario.rol, ignoreCase = true) }
         if (index >= 0) {
             holder.spinnerRol.setSelection(index, false)
         }
 
+        // Listener que solo actúa si cambia el rol
         holder.spinnerRol.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val nuevoRol = rolesVisibles[pos].lowercase()
-                if (nuevoRol != usuario.rol.lowercase()) {
+                val nuevoRol = rolesDb[pos] // con mayúscula inicial
+                if (!nuevoRol.equals(usuario.rol, ignoreCase = true)) {
                     Firebase.firestore.collection("users").document(usuario.uid)
                         .update("role", nuevoRol)
                         .addOnSuccessListener {
                             usuario.rol = nuevoRol
-                            val realPos = holder.adapterPosition
-                            if (realPos != RecyclerView.NO_POSITION) {
-                                notifyItemChanged(realPos)
-                            }
                             Toast.makeText(holder.itemView.context, "Rol actualizado", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(holder.itemView.context, "Error al actualizar", Toast.LENGTH_SHORT).show()
                         }
                 }
             }
@@ -75,9 +75,6 @@ class UserRolAdapter(private val usuarios: List<Usuario>) :
         }
     }
 
-
-
-
-
     override fun getItemCount() = usuarios.size
 }
+
