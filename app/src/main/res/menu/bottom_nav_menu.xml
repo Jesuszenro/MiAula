@@ -10,7 +10,7 @@
         android:title="Calendario"
         />
     <item
-        android:id="@+id/nav_perfil"
+        android:id="@+id/nav_perfilal"
         android:icon="@drawable/profile"
         android:title="Perfil" />
 </menu>

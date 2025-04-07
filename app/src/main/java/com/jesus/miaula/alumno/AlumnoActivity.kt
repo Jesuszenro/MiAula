@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jesus.miaula.R
 import com.jesus.miaula.calendar.CalendarFragment
 import com.jesus.miaula.databinding.ActivityAlumnoBinding
+import com.jesus.miaula.loginRegistro.ProfileFragment
 
 class AlumnoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlumnoBinding
@@ -30,6 +31,12 @@ class AlumnoActivity : AppCompatActivity() {
                 R.id.nav_tareas -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer, ViewGradesFragment())
+                        .commit()
+                    true
+                }
+                R.id.nav_perfilal -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, ProfileFragment())
                         .commit()
                     true
                 }

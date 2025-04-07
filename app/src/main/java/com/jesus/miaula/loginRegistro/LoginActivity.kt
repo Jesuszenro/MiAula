@@ -51,6 +51,12 @@ class LoginActivity : AppCompatActivity() {
             .document(uid)
             .get()
             .addOnSuccessListener { doc ->
+                val role = doc.getString("role") ?: return@addOnSuccessListener
+                val prefs = getSharedPreferences(Preferences.PREFS_NAME, MODE_PRIVATE)
+                prefs.edit()
+                    .putString(Preferences.KEY_UID, uid)
+                    .putString(Preferences.KEY_ROLE, role)
+                    .apply()
                 when (doc.getString("role")) {
                     "Alumno" -> startActivity(Intent(this, AlumnoActivity::class.java))
                     "Profesor" -> startActivity(Intent(this, ProfesorActivity::class.java))

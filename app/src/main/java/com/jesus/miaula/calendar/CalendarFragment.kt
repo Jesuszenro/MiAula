@@ -158,11 +158,7 @@ class CalendarFragment : Fragment() {
                     result.toList()
                 }
 
-                val cursos = result.map { doc ->
-                    val course = doc.toObject(Course::class.java)
-                    course.id = doc.id  // ← guardas el id del documento
-                    course
-                }
+                val cursos = cursosFiltrados.map { it.toObject(Course::class.java) }
 
                 val adapter = CourseAdapter(
                     listCourses = cursos,

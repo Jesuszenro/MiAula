@@ -14,6 +14,5 @@ data class Course(
     val alumnos: List<String> = listOf(),
     val calificaciones: Map<String, Double> = mapOf(),
     val asistencia: Map<String, String> = emptyMap(),
-    @get:Exclude var id: String = ""
 ) : Serializable
 

@@ -3,4 +3,9 @@
     <string name="mi_primera_comuni_n">Mi primera comunión</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="roles_array">
+        <item>Alumno</item>
+        <item>Profesor</item>
+        <item>Administrador</item>
+    </string-array>
 </resources>
