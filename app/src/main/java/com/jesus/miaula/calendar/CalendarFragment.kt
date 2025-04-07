@@ -117,6 +117,17 @@ class CalendarFragment : Fragment() {
 
     private fun loadCourses(selectedDay: DayWeek) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val nombreDiaCompleto = mapOf(
+            "Lun" to "Lunes",
+            "Mar" to "Martes",
+            "Mie" to "Miércoles",
+            "Jue" to "Jueves",
+            "Vie" to "Viernes",
+            "Sab" to "Sábado",
+            "Dom" to "Domingo"
+        )
+
+        val dayCapitalized = nombreDiaCompleto[selectedDay.nombre] ?: selectedDay.nombre
 
         val userDocRef = Firebase.firestore.collection("users").document(uid)
         userDocRef.get().addOnSuccessListener { document ->
@@ -126,18 +137,32 @@ class CalendarFragment : Fragment() {
                 "Profesor" -> {
                     Firebase.firestore.collection("cursos")
                         .whereEqualTo("profesorId", uid)
-                        .whereEqualTo("fecha", selectedDay.fecha)
+                        .whereArrayContains("dias", dayCapitalized)
                 }
                 "Alumno" -> {
+                    // Solo podemos hacer un whereArrayContains aquí
                     Firebase.firestore.collection("cursos")
                         .whereArrayContains("alumnos", uid)
-                        .whereEqualTo("fecha", selectedDay.fecha)
                 }
                 else -> null
             }
 
             query?.get()?.addOnSuccessListener { result ->
-                val cursos = result.map { it.toObject(Course::class.java) }
+                // Para alumnos, filtra manualmente por día
+                val cursosFiltrados = if (role == "Alumno") {
+                    result.filter { doc ->
+                        val dias = doc.get("dias") as? List<*> ?: emptyList<Any>()
+                        dias.contains(dayCapitalized)
+                    }
+                } else {
+                    result.toList()
+                }
+
+                val cursos = result.map { doc ->
+                    val course = doc.toObject(Course::class.java)
+                    course.id = doc.id  // ← guardas el id del documento
+                    course
+                }
 
                 val adapter = CourseAdapter(
                     listCourses = cursos,
@@ -166,6 +191,7 @@ class CalendarFragment : Fragment() {
             Toast.makeText(requireContext(), "No se pudo obtener el rol del usuario", Toast.LENGTH_SHORT).show()
         }
     }
+
     /*
     private fun generateQr(uid: String) {
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())

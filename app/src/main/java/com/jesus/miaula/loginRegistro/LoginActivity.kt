@@ -41,6 +41,9 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error de autenticación", Toast.LENGTH_SHORT).show()
                 }
         }
+        binding.btnRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
     }
 
     private fun redirigirSegunRol(uid: String) {

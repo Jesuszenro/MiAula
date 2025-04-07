@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
@@ -55,12 +56,13 @@ class ScanQrActivity : AppCompatActivity() {
             if (result.contents != null) {
                 val content = result.contents
                 val parts = content.split("|")
-                if (parts.size == 3) {
+                if (parts.size == 4) {
                     val uidAlumno = parts[0]
                     val nombreAlumno = parts[1]
                     val claveCurso = parts[2]
+                    val fecha = parts[3]
 
-                    registerAttendace(claveCurso, uidAlumno, nombreAlumno)
+                    registerAttendace(claveCurso, uidAlumno, nombreAlumno, fecha)
                 } else {
                     Toast.makeText(this, "QR inválido", Toast.LENGTH_SHORT).show()
                 }
@@ -72,7 +74,7 @@ class ScanQrActivity : AppCompatActivity() {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
-    private fun registerAttendace(claveCurso: String, uidAlumno: String, nombreAlumno: String) {
+    private fun registerAttendace(claveCurso: String, uidAlumno: String, nombreAlumno: String, fecha: String) {
         Firebase.firestore.collection("cursos")
             .whereEqualTo("clave", claveCurso)
             .get()
@@ -80,17 +82,18 @@ class ScanQrActivity : AppCompatActivity() {
                 val cursoDoc = result.documents.firstOrNull()
                 if (cursoDoc != null) {
                     val ref = cursoDoc.reference
-                    ref.update("asistencia.$uidAlumno", nombreAlumno)
+                    val asistenciaRef = ref.collection("asistencia").document(fecha)
+                    val data = hashMapOf <String, Any>(
+                        uidAlumno to true
+                    )
+                    asistenciaRef.set(data, SetOptions.merge()) // ← solo añade o modifica el campo del alumno
                         .addOnSuccessListener {
                             Toast.makeText(this, "Asistencia registrada", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener {
-                            Toast.makeText(
-                                this,
-                                "Error al registrar asistencia",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this, "Error al registrar asistencia", Toast.LENGTH_SHORT).show()
                         }
+
                 } else {
                     Toast.makeText(this, "Curso no encontrado", Toast.LENGTH_SHORT).show()
                 }

@@ -38,7 +38,7 @@ class CourseAdapter(
         holder.nombre.text = course.nombre
         holder.inscritos.text = "Alumnos inscritos: ${course.alumnos.size}"
         holder.salon.text = "Salón: ${course.salon}"
-        holder.fechaHora.text = "Fecha y hora: ${course.fecha} ${course.hora}"
+        holder.fechaHora.text = "Fecha y hora: ${course.dias} ${course.hora}"
 
         // Mostrar u ocultar el nombre del docente
         if (isProfesorMode) {

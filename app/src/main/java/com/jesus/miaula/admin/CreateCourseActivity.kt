@@ -1,10 +1,10 @@
 package com.jesus.miaula.admin
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -21,20 +21,22 @@ class CreateCourseActivity : AppCompatActivity() {
         binding = ActivityCreateCourseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         cargarProfesores()
-        // Selección de fecha
+        val diasSemana =
+            arrayOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
+        val diasSeleccionados = mutableListOf<String>()
+
         binding.etFecha.setOnClickListener {
-            val calendario = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
-                this,
-                { _, year, month, dayOfMonth ->
-                    val fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                    binding.etFecha.setText(fecha)
-                },
-                calendario.get(Calendar.YEAR),
-                calendario.get(Calendar.MONTH),
-                calendario.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.show()
+            val seleccionados = BooleanArray(diasSemana.size)
+            AlertDialog.Builder(this)
+                .setTitle("Selecciona los días")
+                .setMultiChoiceItems(diasSemana, seleccionados) { _, index, isChecked ->
+                    if (isChecked) diasSeleccionados.add(diasSemana[index])
+                    else diasSeleccionados.remove(diasSemana[index])
+                }
+                .setPositiveButton("Aceptar") { _, _ ->
+                    binding.etFecha.setText(diasSeleccionados.joinToString(", "))
+                }
+                .show()
         }
 
         // Selección de hora
@@ -60,37 +62,47 @@ class CreateCourseActivity : AppCompatActivity() {
             val profesor = if (profesorIndex != -1) listaProfesores[profesorIndex].first else ""
             val salon = binding.etSalon.text.toString()
             val capacidad = binding.etCapacidad.text.toString().toIntOrNull() ?: 0
-            val fecha = binding.etFecha.text.toString()
             val hora = binding.etHora.text.toString()
 
-            val curso = Course(
-                nombre = name,
-                clave = clave,
-                profesorId = profesor,
-                salon = salon,
-                capacidad = capacidad,
-                fecha = fecha,
-                hora = hora,
-                alumnos = listOf()
-            )
-
-            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
-                // Guardar en la colección global "cursos"
             Firebase.firestore.collection("cursos")
-                .add(curso)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Curso registrado correctamente", Toast.LENGTH_SHORT).show()
-                    setResult(RESULT_OK)
-                    finish()
+                .whereEqualTo("clave", clave)
+                .get()
+                .addOnSuccessListener { result ->
+                    if (!result.isEmpty) {
+                        Toast.makeText(this, "Ya existe un curso con esa clave", Toast.LENGTH_SHORT)
+                            .show()
+                        return@addOnSuccessListener // ← Detiene aquí si ya existe
+                    }
+
+                    val curso = Course(
+                        nombre = name,
+                        clave = clave,
+                        profesorId = profesor,
+                        salon = salon,
+                        capacidad = capacidad,
+                        dias = diasSeleccionados,
+                        hora = hora,
+                        alumnos = listOf()
+                    )
+
+                    Firebase.firestore.collection("cursos")
+                        .add(curso)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this,
+                                "Curso registrado correctamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            setResult(RESULT_OK)
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
+                        }
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show()
-                }
-            setResult(RESULT_OK) // ← Notifica a AdminActivity que se guardó
-            finish()
         }
     }
-    private fun cargarProfesores() {
+        private fun cargarProfesores() {
         Firebase.firestore.collection("users")
             .whereEqualTo("role", "Profesor")
             .get()

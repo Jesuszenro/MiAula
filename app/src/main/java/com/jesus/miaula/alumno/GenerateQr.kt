@@ -56,17 +56,35 @@ class GenerateQr(private val context: Context) {
 
                 db.collection("cursos")
                     .whereArrayContains("alumnos", uid)
-                    .whereEqualTo("fecha", currentDate)
                     .get()
                     .addOnSuccessListener { result ->
                         val cursoActual = result.documents.firstOrNull { doc ->
+                            val dias = doc.get("dias") as? List<*> ?: return@firstOrNull false
+                            val diaActual = SimpleDateFormat("EEEE", Locale("es", "ES")).format(Date()).replaceFirstChar { it.uppercase() }
                             val horaCurso = doc.getString("hora") ?: ""
-                            isOnRange(horaCurso, currentTime)
+                            uid in (doc["alumnos"] as? List<*> ?: emptyList<Any>()) &&
+                                    dias.contains(diaActual) &&
+                                    isOnRange(horaCurso, currentTime)
                         }
 
                         if (cursoActual != null) {
                             val clave = cursoActual.getString("clave") ?: return@addOnSuccessListener
-                            val qrData = "$uid|$nombre|$clave"
+                            val cursoId = cursoActual.id
+
+                            // Subcolección asistencia
+                            val asistenciaRef = db.collection("cursos").document(cursoId)
+                                .collection("asistencia").document(currentDate)
+
+                            asistenciaRef.get().addOnSuccessListener { docSnap ->
+                                if (!docSnap.exists()) {
+                                    asistenciaRef.set(mapOf(uid to false)) // Primer alumno marca presencia
+                                } else {
+                                    asistenciaRef.update(uid, false)
+                                }
+                            }
+
+                            // Generar QR con clave + uid + fecha
+                            val qrData = "$uid|$nombre|$clave|$currentDate"
                             val bmp = generarQrBitmap(qrData)
                             ivQrCode.setImageBitmap(bmp)
                         } else {

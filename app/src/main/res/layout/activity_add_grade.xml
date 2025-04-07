@@ -55,23 +55,23 @@
                 android:layout_marginTop="8dp"
                 android:textStyle="bold" />
 
+            <!-- Lista de alumnos con campos de calificación -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calificaciones"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/Blue_main"
+                android:textSize="18sp" />
 
-        <!-- Lista de alumnos con campos de calificación -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Calificaciones"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/Blue_main"
-            android:textSize="18sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCalificaciones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCalificaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
+
         <!-- Botón guardar -->
         <Button
             android:id="@+id/btnGuardarCalificaciones"
@@ -80,7 +80,44 @@
             android:text="GUARDAR CALIFICACIONES"
             android:textAllCaps="true"
             android:layout_marginTop="24dp"
-            android:background = "@drawable/btn_bg" />
+            android:background="@drawable/btn_bg" />
+
+        <!-- Botón mostrar asistencia -->
+        <LinearLayout
+            android:id="@+id/layoutToggleAsistencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mostrar asistencia"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/ivArrowAsistencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_drop_down" />
+        </LinearLayout>
+
+        <!-- RecyclerView de asistencia (afuera del botón toggle) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAttendance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 </ScrollView>
+
+

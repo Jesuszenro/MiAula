@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <TextView
-        android:text="Bienvenido, Chuyón"
+        android:text="Bienvenido, Administrador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
